@@ -1,5 +1,6 @@
 package com.sample.sbb.user;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,6 +18,11 @@ public class UserController {
 
 	private final UserService userService;
 
+	@GetMapping("/login")
+    public String login() {
+        return "login_form";
+    }
+	
 	// Spring 매개 변수 v1
 	@GetMapping("/signup")
 	public String signup(UserCreateForm userform) {
@@ -46,7 +52,18 @@ public class UserController {
 			return "signup_form";
 		}
 
-		userService.create(userCreateForm.getUsername(), userCreateForm.getEmail(), userCreateForm.getPassword1());
+		try {
+			userService.create(userCreateForm.getUsername(), userCreateForm.getEmail(), userCreateForm.getPassword1());
+		} catch(DataIntegrityViolationException e) {
+				e.printStackTrace();
+				bindingResult.reject("signupFail","이미 등록된 사용자 입니다.");
+				return "signup_form";
+		} catch(Exception e) {
+			e.printStackTrace();
+			bindingResult.reject("signupFail",e.getMessage());
+			return "signup_form";
+		}
+		
 		return "redirect:/";
 	}
 
