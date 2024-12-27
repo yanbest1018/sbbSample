@@ -10,6 +10,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.annotation.ResponseStatusExceptionResolver;
+import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
+import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
 import com.sample.sbb.DataNotFoundException;
 import com.sample.sbb.user.SiteUser;
@@ -60,6 +63,12 @@ public class QuestionService {
 		question.setCreateDate(LocalDateTime.now());
 		question.setAuthor(siteUser);
 		this.questionRepository.save(question);
+	}
+	
+	public void delete(Question question ) {
+		
+		
+		this.questionRepository.delete(question);
 	}
 	
 }

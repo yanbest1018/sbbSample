@@ -20,8 +20,12 @@
 				</div>
 			</div>
 			<div class="my-3">
-				<span sec:authentication="principal.authorities"></span> /
-				<span th:text="${#authentication.principal}"></span> /
+				<!--/* <span sec:authentication="principal.authorities"></span> /
+				<span th:text="${#authentication.principal}"></span> / */-->
+				<a th:href="@{|/question/delete/${question.id}|}" class="btn btn-sm btm-outline-secondary"
+					sec:authorize="isAuthenticated()"
+					th:if="${question.author != null and #authentication.name == question.author.username}"
+					th:text="삭제"></a>
 				<a th:href="@{|/question/modify/${question.id}|}" class="btn btn-sm btm-outline-secondary"
 					sec:authorize="isAuthenticated()"
 					th:if="${question.author != null and #authentication.name == question.author.username}"

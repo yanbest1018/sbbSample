@@ -3,6 +3,7 @@ package com.sample.sbb.question;
 import java.security.Principal;
 
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.sample.sbb.answer.AnswerForm;
 import com.sample.sbb.user.SiteUser;
@@ -74,4 +76,23 @@ public class QuestionController {
 		}
 		return "redirect:/question/list";
 	}
+	
+	@GetMapping("/delete/{id}")
+	@PreAuthorize("isAuthenticated()")
+	public String deleteQuestion(
+			@PathVariable("id") Integer id,
+			Principal principal) {
+		
+		String username = principal.getName();
+		
+		Question question = this.questionService.getQuestion(id);
+		
+		if ( question.getAuthor().getUsername() == username ) {
+			this.questionService.delete(question);
+		} else {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"삭제권한이 없습니다.");
+		}
+		return "redirect:/question/list";
+	}
+	
 }
