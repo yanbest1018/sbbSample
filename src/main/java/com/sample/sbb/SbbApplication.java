@@ -12,7 +12,4 @@ public class SbbApplication {
 	
 		System.out.println("Spring is Start~~!!");
 	}
-	
-	
-
 }

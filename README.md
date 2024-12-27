@@ -5,7 +5,8 @@
 
 ### 개발 환경
 - Spring Tool Suite 4.27.0.RELEASE
-- Spring Boot 2.7.1
+- Spring Framework 6.0.2
+- Spring Boot 3.4.0
 - Gradle gradle-8.11.1
 - Java 17
 
